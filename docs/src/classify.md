@@ -1,25 +1,25 @@
 # Classifier
 
-Text Analysis currently offers a Naive Bayes Classifier for text classification.
+TextAnalysis currently offers a Naive Bayes Classifier for text classification.
 
-To load the Naive Bayes Classifier, use the following command -
+To load the Naive Bayes Classifier, use the following command:
 
     using TextAnalysis: NaiveBayesClassifier, fit!, predict
 
 ## Basic Usage
 
-Its usage can be done in the following 3 steps.
+It can be used in the following 3 steps:
 
-1- Create an instance of the Naive Bayes Classifier model -
+1. Create an instance of the Naive Bayes Classifier model:
 ```@docs
 NaiveBayesClassifier
 ```
 
-2- Fitting the model weights on input -
+2. Fit the model weights on training data:
 ```@docs
 fit!
 ```
-3- Predicting for the input case -
+3. Make predictions on new data:
 ```@docs
 predict
 ```
