@@ -11,7 +11,7 @@
     coo_matrix(::Type{T}, doc::Vector{AbstractString}, vocab::OrderedDict{AbstractString, Int}, window::Int, normalize::Bool, mode::Symbol)
 
 Basic low-level function that calculates the co-occurrence matrix of a document.
-Returns a sparse co-occurrence matrix sized `n × n` where `n = length(vocab)`
+Return a sparse co-occurrence matrix sized `n × n` where `n = length(vocab)`
 with elements of type `T`. The document `doc` is represented by a vector of its
 terms (in order)`. The keywords `window` and `normalize` indicate the size of the
 sliding word window in which co-occurrences are counted and whether to normalize
@@ -86,13 +86,11 @@ coo_matrix(::Type{T}, doc::Vector{<:AbstractString}, vocab::Dict{<:AbstractStrin
 
 """
 Basic Co-occurrence Matrix (COOM) type.
+
 # Fields
-  * `coom::SparseMatriCSC{T,Int}` the actual COOM; elements represent
-co-occurrences of two terms within a given window
-  * `terms::Vector{String}` a list of terms that represent the lexicon of
-the document or corpus
-  * `column_indices::OrderedDict{String, Int}` a map between the `terms` and the
-columns of the co-occurrence matrix
+* `coom::SparseMatrixCSC{T,Int}`: The actual COOM; elements represent co-occurrences of two terms within a given window.
+* `terms::Vector{String}`: A list of terms that represent the lexicon of the document or corpus.
+* `column_indices::OrderedDict{String, Int}`: A map between the `terms` and the columns of the co-occurrence matrix.
 """
 struct CooMatrix{T}
     coom::SparseMatrixCSC{T,Int}
@@ -104,11 +102,9 @@ end
 """
     CooMatrix{T}(crps::Corpus [,terms] [;window=5, normalize=true])
 
-Auxiliary constructor(s) of the `CooMatrix` type. The type `T` has to be
-a subtype of `AbstractFloat`. The constructor(s) requires a corpus `crps` and
-a `terms` structure representing the lexicon of the corpus. The latter
-can be a `Vector{String}`, an `AbstractDict` where the keys are the lexicon,
-or can be omitted, in which case the `lexicon` field of the corpus is used.
+Auxiliary constructors of the `CooMatrix` type. The type `T` must be a subtype of `AbstractFloat`. 
+
+The constructors require a corpus `crps` and a `terms` structure representing the lexicon of the corpus. The latter can be a `Vector{String}`, an `AbstractDict` where the keys are the lexicon, or can be omitted, in which case the `lexicon` field of the corpus is used.
 """
 function CooMatrix{T}(crps::Corpus,
     terms::Vector{String};
@@ -182,11 +178,11 @@ Access the co-occurrence matrix field `coom` of a `CooMatrix` `c`.
 coom(c::CooMatrix) = c.coom
 
 """
-    coom(entity, eltype=DEFAULT_FLOAT_TYPE [;window=5, normalize=true])
+    coom(entity, eltype=Float [;window=5, normalize=true])
 
 Access the co-occurrence matrix of the `CooMatrix` associated
-with the `entity`. The `CooMatrix{T}` will first have to
-be created in order for the actual matrix to be accessed.
+with the `entity`. The `CooMatrix{T}` will first be
+created in order for the actual matrix to be accessed.
 """
 coom(entity, eltype::Type{T}=Float;
     window::Int=5, normalize::Bool=true, mode::Symbol=:default) where {T<:AbstractFloat} =

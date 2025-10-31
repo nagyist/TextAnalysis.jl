@@ -1,14 +1,14 @@
 """
-    everygram(seq::Vector{T}; min_len::Int=1, max_len::Int=-1)where { T <: AbstractString}
+    everygram(seq::Vector{T}; min_len::Int=1, max_len::Int=-1) where {T <: AbstractString}
 
-Return all possible ngrams generated from sequence of items, as an Array{String,1}
+Return all possible n-grams generated from a sequence of items, as a `Vector{String}`.
 
 # Example
 
 ```julia-repl
 julia> seq = ["To","be","or","not"]
-julia> a = everygram(seq,min_len=1, max_len=-1)
- 10-element Array{Any,1}:
+julia> a = everygram(seq, min_len=1, max_len=-1)
+ 10-element Vector{Any}:
   "or"          
   "not"         
   "To"          
@@ -34,18 +34,18 @@ function everygram(seq::Vector{T}; min_len::Int=1, max_len::Int=-1)::Vector{Stri
 end
 
 """
-    padding_ngram(word::Vector{T}, n=1; pad_left=false, pad_right=false, left_pad_symbol="<s>", right_pad_symbol ="</s>") where { T <: AbstractString}
+    padding_ngram(word::Vector{T}, n=1; pad_left=false, pad_right=false, left_pad_symbol="<s>", right_pad_symbol="</s>") where {T <: AbstractString}
    
-padding _ngram is used to pad both left and right of sentence and out putting ngrmas of order n
-   
-   It also pad the original input Array of string 
+Pad both left and right sides of a sentence and output n-grams of order n.
+
+This function also pads the original input vector of strings. 
 
 # Example 
 ```julia-repl
 julia> example = ["1","2","3","4","5"]
 
 julia> padding_ngram(example,2,pad_left=true,pad_right=true)
- 6-element Array{Any,1}:
+ 6-element Vector{Any}:
   "<s> 1" 
   "1 2"   
   "2 3"   
@@ -69,15 +69,15 @@ function padding_ngram(
 end
 
 """
-    ngramizenew( words::Vector{T}, nlist::Integer...) where { T <: AbstractString}   
+    ngramizenew(words::Vector{T}, nlist::Integer...) where {T <: AbstractString}   
 
-ngramizenew is used to out putting ngrmas in set
+Generate n-grams from a sequence of words.
    
 # Example
 ```julia-repl
 julia> seq=["To","be","or","not","To","not","To","not"]
-julia> ngramizenew(seq ,2)
- 7-element Array{Any,1}:
+julia> ngramizenew(seq, 2)
+ 7-element Vector{Any}:
   "To be" 
   "be or" 
   "or not"

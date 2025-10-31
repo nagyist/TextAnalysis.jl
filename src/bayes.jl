@@ -7,7 +7,7 @@ simpleTokenise(s) = WordTokenizers.tokenize(lowercase(replace(s, "." => "")))
 """
 $(TYPEDSIGNATURES)
 
-Create a dict that maps elements in input array to their frequencies.
+Create a dictionary that maps elements in input array to their frequencies.
 """
 function frequencies(xs::AbstractVector{T})::Dict{T,Int} where {T<:Any}
     frequencies = Dict{eltype(xs),Int}()
@@ -20,7 +20,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-Compute an Array, mapping the value corresponding to elements of `dict` to the input `AbstractDict`.
+Compute an array, mapping the values corresponding to elements of `dict` from the input `AbstractDict`.
 """
 function features(fs::AbstractDict, dict::AbstractVector)::Vector{Int}
     bag = Vector{Int}(undef, size(dict))
@@ -45,9 +45,9 @@ end
 
 A Naive Bayes Classifier for classifying documents.
 
-It takes two arguments:
-* `classes`: An array of possible classes that the concerned data could belong to.
-* `dict`:(Optional Argument) An Array of possible tokens (words). This is automatically updated if a new token is detected in the Step 2) or 3)
+# Arguments
+- `classes`: Array of possible classes that the data could belong to
+- `dict`: (Optional) Array of possible tokens (words). This is automatically updated if a new token is detected during training or prediction
 
 # Example
 ```julia-repl
@@ -79,7 +79,7 @@ probabilities(c::NaiveBayesClassifier) = c.weights ./ sum(c.weights, dims=1)
 """
     extend!(model::NaiveBayesClassifier, dictElement)
 
-Add the dictElement to dictionary of the Classifier `model`.
+Add the `dictElement` to the dictionary of the classifier `model`.
 """
 function extend!(c::NaiveBayesClassifier, dictElement)
     push!(c.dict, dictElement)

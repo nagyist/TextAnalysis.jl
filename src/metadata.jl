@@ -72,7 +72,7 @@ end
 """
     author!(doc, author)
 
-Set the author metadata of doc to `author`.
+Set the author metadata of `doc` to `author`.
 
 See also: [`author`](@ref), [`authors`](@ref), [`authors!`](@ref)
 """
@@ -83,7 +83,7 @@ end
 """
     timestamp!(doc, timestamp::AbstractString)
 
-Set the timestamp metadata of doc to `timestamp`.
+Set the timestamp metadata of `doc` to `timestamp`.
 
 See also: [`timestamp`](@ref), [`timestamps`](@ref), [`timestamps!`](@ref)
 """
@@ -139,7 +139,7 @@ timestamps!(c::Corpus, nv::AbstractString) = timestamp!.(documents(c), Ref(nv))
 
 Update titles of the documents in a Corpus.
 
-If the input is a String, set the same title for all documents. If the input is a vector, set title of `i`th document to corresponding `i`th element in the vector `vec`. In the latter case, the number of documents must equal the length of vector.
+If the input is a String, set the same title for all documents. If the input is a vector, set the title of the `i`th document to the corresponding `i`th element in the vector `vec`. In the latter case, the number of documents must equal the length of the vector.
 
 See also: [`titles`](@ref), [`title!`](@ref), [`title`](@ref)
 """
@@ -156,7 +156,7 @@ end
 
 Update languages of documents in a Corpus.
 
-If the input is a Vector, then language of the `i`th document is set to the `i`th element in the vector, respectively. However, the number of documents must equal the length of vector.
+If the input is a Vector, then the language of the `i`th document is set to the `i`th element in the vector, respectively. However, the number of documents must equal the length of the vector.
 
 See also: [`languages`](@ref), [`language!`](@ref), [`language`](@ref)
 """

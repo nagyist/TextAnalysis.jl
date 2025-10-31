@@ -26,16 +26,21 @@ end
 
 Perform [Latent Dirichlet allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation).
 
-# Required Positional Arguments
-- `α` Dirichlet dist. hyperparameter for topic distribution per document. `α<1` yields a sparse topic mixture for each document. `α>1` yields a more uniform topic mixture for each document.
-- `β` Dirichlet dist. hyperparameter for word distribution per topic. `β<1` yields a sparse word mixture for each topic. `β>1` yields a more uniform word mixture for each topic.
+# Arguments
+- `dtm::DocumentTermMatrix`: Document-term matrix containing the corpus
+- `ntopics::Int`: Number of topics to extract
+- `iterations::Int`: Number of Gibbs sampling iterations
+- `α::Float64`: Dirichlet distribution hyperparameter for topic distribution per document. 
+  `α < 1` yields a sparse topic mixture, `α > 1` yields a more uniform topic mixture
+- `β::Float64`: Dirichlet distribution hyperparameter for word distribution per topic.
+  `β < 1` yields a sparse word mixture, `β > 1` yields a more uniform word mixture
 
-# Optional Keyword Arguments
-- `showprogress::Bool`. Show a progress bar during the Gibbs sampling. Default value: `true`.
+# Keyword Arguments
+- `showprogress::Bool`: Show a progress bar during Gibbs sampling (default: `true`)
 
-# Return Values
-- `ϕ`: `ntopics × nwords` Sparse matrix of probabilities s.t. `sum(ϕ, 1) == 1`
-- `θ`: `ntopics × ndocs` Dense matrix of probabilities s.t. `sum(θ, 1) == 1`
+# Returns
+- `ϕ`: `ntopics × nwords` sparse matrix of word probabilities per topic
+- `θ`: `ntopics × ndocs` dense matrix of topic probabilities per document
 """
 function lda(
     dtm::DocumentTermMatrix, ntopics::Int, iteration::Int,

@@ -24,19 +24,18 @@ mutable struct TextHashFunction
 end
 
 """
-```
-TextHashFunction(cardinality)
-TextHashFunction(hash_function, cardinality)
-```
+    TextHashFunction(cardinality)
+    TextHashFunction(hash_function, cardinality)
 
-The need to create a lexicon before we can construct a document term matrix is often prohibitive.
-We can often employ a trick that has come to be called the Hash Trick in which we replace terms
-with their hashed valued using a hash function that outputs integers from 1 to N.
+The need to create a lexicon before constructing a document term matrix is often prohibitive.
+This implementation employs the "Hash Trick" technique, which replaces terms with their hashed 
+values using a hash function that outputs integers from 1 to N.
 
-Parameters:
-	-  cardinality	    = Max index used for hashing (default 100)
- 	-  hash_function    = function used for hashing process (default function present, see code-base)
+# Arguments
+- `cardinality`: Maximum index used for hashing (default: 100)
+- `hash_function`: Function used for hashing process (default: built-in `hash` function)
 
+# Examples
 ```julia-repl
 julia> h = TextHashFunction(10)
 TextHashFunction(hash, 10)
@@ -49,16 +48,15 @@ TextHashFunction() = TextHashFunction(hash, 100)
 cardinality(h::TextHashFunction) = h.cardinality
 
 """
-```
-index_hash(str, TextHashFunc)
-```
+    index_hash(str, TextHashFunc)
 
-Shows mapping of string to integer.
+Show mapping of string to integer using the hash trick.
 
-Parameters:
-	-  str		   = Max index used for hashing (default 100)
- 	-  TextHashFunc    = TextHashFunction type object
+# Arguments
+- `str`: String to be hashed
+- `TextHashFunc`: TextHashFunction object containing hash configuration
 
+# Examples
 ```julia-repl
 julia> h = TextHashFunction(10)
 TextHashFunction(hash, 10)

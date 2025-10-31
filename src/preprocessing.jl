@@ -50,6 +50,7 @@ remove_corrupt_utf8!(d::FileDocument) = error("FileDocument cannot be modified")
 """
     remove_corrupt_utf8!(doc)
     remove_corrupt_utf8!(crps)
+
 Remove corrupt UTF8 characters for `doc` or documents in `crps`.
 Does not support `FileDocument` or Corpus containing `FileDocument`.
 See also: [`remove_corrupt_utf8`](@ref)
@@ -83,6 +84,7 @@ end
 
 """
     remove_case(str)
+
 Convert `str` to lowercase.
 See also: [`remove_case!`](@ref)
 """
@@ -92,6 +94,7 @@ remove_case(s::T) where {T<:AbstractString} = lowercase(s)
 """
     remove_case!(doc)
     remove_case!(crps)
+
 Convert the text of `doc` or `crps` to lowercase.
 Does not support `FileDocument` or `crps` containing `FileDocument`.
 # Example
@@ -146,6 +149,7 @@ const html_tags = Regex("<[^>]*>")
 
 """
     remove_html_tags(str)
+
 Remove html tags from `str`, including the style and script tags.
 See also: [`remove_html_tags!`](@ref)
 """
@@ -158,6 +162,7 @@ end
 """
     remove_html_tags!(doc::StringDocument)
     remove_html_tags!(crps)
+
 Remove html tags from the `StringDocument` or documents `crps`.
 Does not work for documents other than `StringDocument`.
 # Example
@@ -203,6 +208,7 @@ end
 """
     remove_words!(doc, words::Vector{AbstractString})
     remove_words!(crps, words::Vector{AbstractString})
+
 Remove the occurrences of words from `doc` or `crps`.
 # Example
 ```julia-repl
@@ -240,8 +246,9 @@ function tag_pos!(entity::Union{Corpus,TokenDocument,StringDocument})
 end
 
 """
-    sparse_terms(crps, alpha=0.05])
-Find the sparse terms from Corpus, occurring in less than `alpha` percentage of the documents.
+    sparse_terms(crps, alpha=0.05)
+
+Return the sparse terms from `crps`, occurring in less than `alpha` percentage of the documents.
 # Example
 ```
 julia> crps = Corpus([StringDocument("This is Document 1"),
@@ -254,7 +261,7 @@ A Corpus with 2 documents:
 Corpus's lexicon contains 0 tokens
 Corpus's index contains 0 tokens
 julia> sparse_terms(crps, 0.5)
-2-element Array{String,1}:
+2-element Vector{String}:
  "1"
  "2"
 ```
@@ -263,7 +270,7 @@ See also: [`remove_sparse_terms!`](@ref), [`frequent_terms`](@ref)
 function sparse_terms(crps::Corpus, alpha::Real=alpha_sparse)
     update_lexicon!(crps)
     update_inverse_index!(crps)
-    res = Array{String}(undef, 0)
+    res = Vector{String}(undef, 0)
     ndocs = length(crps.documents)
     for term in keys(crps.lexicon)
         f = length(crps.inverse_index[term]) / ndocs
@@ -276,7 +283,8 @@ end
 
 """
     frequent_terms(crps, alpha=0.95)
-Find the frequent terms from Corpus, occurring more than `alpha` percentage of the documents.
+
+Return the frequent terms from `crps`, occurring more than `alpha` percentage of the documents.
 # Example
 ```
 julia> crps = Corpus([StringDocument("This is Document 1"),
@@ -289,7 +297,7 @@ A Corpus with 2 documents:
 Corpus's lexicon contains 0 tokens
 Corpus's index contains 0 tokens
 julia> frequent_terms(crps)
-3-element Array{String,1}:
+3-element Vector{String}:
  "is"
  "This"
  "Document"
@@ -299,7 +307,7 @@ See also: [`remove_frequent_terms!`](@ref), [`sparse_terms`](@ref)
 function frequent_terms(crps::Corpus, alpha::Real=alpha_frequent)
     update_lexicon!(crps)
     update_inverse_index!(crps)
-    res = Array{String}(undef, 0)
+    res = Vector{String}(undef, 0)
     ndocs = length(crps.documents)
     for term in keys(crps.lexicon)
         f = length(crps.inverse_index[term]) / ndocs
@@ -312,7 +320,8 @@ end
 
 """
     remove_sparse_terms!(crps, alpha=0.05)
-Remove sparse terms in crps, occurring less than `alpha` percent of documents.
+
+Remove sparse terms from `crps`, occurring in less than `alpha` percent of documents.
 # Example
 ```julia-repl
 julia> crps = Corpus([StringDocument("This is Document 1"),
@@ -336,7 +345,8 @@ remove_sparse_terms!(crps::Corpus, alpha::Real=alpha_sparse) = remove_words!(crp
 
 """
     remove_frequent_terms!(crps, alpha=0.95)
-Remove terms in `crps`, occurring more than `alpha` percent of documents.
+
+Remove frequent terms from `crps`, occurring in more than `alpha` percent of documents.
 # Example
 ```julia-repl
 julia> crps = Corpus([StringDocument("This is Document 1"),
@@ -362,6 +372,7 @@ remove_frequent_terms!(crps::Corpus, alpha::Real=alpha_frequent) = remove_words!
 """
     prepare!(doc, flags)
     prepare!(crps, flags)
+
 Preprocess document or corpus based on the input flags.
 # List of Flags
 * strip_patterns
@@ -438,8 +449,8 @@ end
 """
     remove_whitespace(str)
 
-Squash multiple whitespaces to a single one.
-And remove all leading and trailing whitespaces.
+Remove multiple whitespaces and replace with a single space.
+Remove all leading and trailing whitespaces.
 See also: [`remove_whitespace!`](@ref)
 """
 remove_whitespace(str::AbstractString) = replace(strip(str), r"\s+" => " ")
@@ -449,7 +460,7 @@ remove_whitespace(str::AbstractString) = replace(strip(str), r"\s+" => " ")
     remove_whitespace!(doc)
     remove_whitespace!(crps)
 
-Squash multiple whitespaces to a single space and remove all leading and trailing whitespaces in document or crps.
+Remove multiple whitespaces and replace with a single space, removing all leading and trailing whitespaces in document or corpus.
 Does no-op for `FileDocument`, `TokenDocument` or `NGramDocument`.
 See also: [`remove_whitespace`](@ref)
 """

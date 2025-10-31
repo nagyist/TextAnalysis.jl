@@ -3,8 +3,8 @@ using DataStructures
 """
 $(TYPEDSIGNATURES)
 
-counter is used to make conditional distribution, which is used by score functions to 
-calculate conditional frequency distribution
+Create a conditional distribution counter, which is used by score functions to 
+calculate conditional frequency distributions.
 """
 function counter2(data, min::Integer, max::Integer)
     data = everygram(data, min_len=min, max_len=max)

@@ -1,8 +1,17 @@
 
 """
-    weighted_lcs(X, Y, weight_score::Bool, returns_string::Bool, weigthing_function::Function)
+    weighted_lcs(X, Y, weighted=true, f=sqrt)
 
 Compute the Weighted Longest Common Subsequence of X and Y.
+
+# Arguments
+- `X`: First sequence
+- `Y`: Second sequence  
+- `weighted`: Whether to use weighted computation (default: true)
+- `f`: Weighting function (default: sqrt)
+
+# Returns
+- `Float32`: Length of the weighted longest common subsequence
 """
 function weighted_lcs(X, Y, weighted=true, f=sqrt)
     result = weighted_lcs_inner(X, Y, weighted, f)
@@ -10,6 +19,20 @@ function weighted_lcs(X, Y, weighted=true, f=sqrt)
     return result.c_table[end, end]
 end
 
+"""
+    weighted_lcs_tokens(X, Y, weighted=true, f=sqrt)
+
+Compute the tokens of the Weighted Longest Common Subsequence of X and Y.
+
+# Arguments
+- `X`: First sequence  
+- `Y`: Second sequence
+- `weighted`: Whether to use weighted computation (default: true)
+- `f`: Weighting function (default: sqrt)
+
+# Returns
+- `Vector{String}`: Array of tokens in the longest common subsequence
+"""
 function weighted_lcs_tokens(X, Y, weighted=true, f=sqrt)
     m, n, c_table, _w_table = weighted_lcs_inner(X, Y, weighted, f)
 
@@ -64,15 +87,17 @@ end
 
 
 """
-    fmeasure_lcs(RLCS, PLCS, β)
+    fmeasure_lcs(RLCS, PLCS, β=1.0)
 
 Compute the F-measure based on WLCS.
 
 # Arguments
+- `RLCS`: Recall factor for LCS computation
+- `PLCS`: Precision factor for LCS computation  
+- `β`: Beta parameter controlling precision vs recall balance (default: 1.0)
 
-- `RLCS` - Recall Factor
-- `PLCS` - Precision Factor
-- `β` - Parameter
+# Returns
+- `Real`: F-measure score balancing precision and recall
 """
 function fmeasure_lcs(RLCS::Real, PLCS::Real, β=1.0)::Real
     divider = RLCS + (β^2) * PLCS

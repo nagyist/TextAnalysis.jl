@@ -34,9 +34,9 @@ Base.show(io::IO, score::Score) = Base.write(io,
 """
     average(scores::Vector{Score})::Score
 
-* scores - vector of [`Score`](@ref)
+* `scores` - Vector of [`Score`](@ref) objects
 
-Returns average values of scores as a [`Score`](@ref) with precision/recall/fmeasure
+Return average values of scores as a [`Score`](@ref) with precision/recall/fmeasure.
 """
 function average(scores::Vector{Score})::Score
     res = reduce(scores, init=zeros(Float32, 3)) do acc, i
@@ -52,9 +52,9 @@ end
 """
     argmax(scores::Vector{Score})::Score
 
-* scores - vector of [`Score`](@ref)
+* `scores` - Vector of [`Score`](@ref) objects
 
-Returns maximum by precision fiels of each [`Score`](@ref)
+Return the maximum by f-measure field of each [`Score`](@ref).
 """
 Base.argmax(scores::Vector{Score})::Score = argmax(s -> s.fmeasure, scores)
 
@@ -68,14 +68,13 @@ Base.argmax(scores::Vector{Score})::Score = argmax(s -> s.fmeasure, scores)
 
 Compute n-gram recall between `candidate` and the `references` summaries.
 
-The function takes the following arguments -
+# Arguments
+- `references::Vector{T} where T<: AbstractString` - List of reference summaries
+- `candidate::AbstractString` - Input candidate summary to be scored against reference summaries
+- `n::Integer` - Order of n-grams
+- `lang::Language` - Language of the text, useful while generating n-grams (default: `Languages.English()`)
 
-* `references::Vector{T} where T<: AbstractString` = The list of reference summaries.
-* `candidate::AbstractString` = Input candidate summary, to be scored against reference summaries.
-* `n::Integer` = Order of NGrams
-* `lang::Language` = Language of the text, useful while generating N-grams. Defaults value is Languages.English()
-
-Returns a vector of [`Score`](@ref)
+Return a vector of [`Score`](@ref) objects.
 
 See [Rouge: A package for automatic evaluation of summaries](http://www.aclweb.org/anthology/W04-1013)
 
@@ -117,12 +116,14 @@ end
 
 Calculate the ROUGE-L score between `references` and `candidate` at sentence level.
 
-Returns a vector of [`Score`](@ref)
+Return a vector of [`Score`](@ref) objects.
 
 See [Rouge: A package for automatic evaluation of summaries](http://www.aclweb.org/anthology/W04-1013)
 
-Note: the `weighted` argument enables weighting of values when calculating the longest common subsequence.
-Initial implementation ROUGE-1.5.5.pl contains a power function. The function `weight_func` here has a power of 0.5 by default.
+!!! note
+    The `weighted` argument enables weighting of values when calculating the longest common subsequence.
+    Initial implementation ROUGE-1.5.5.pl contains a power function. The function `weight_func` here 
+    has a power of 0.5 by default.
 
 See also: [`rouge_n`](@ref), [`rouge_l_summary`](@ref)
 """
@@ -151,11 +152,11 @@ end
 
 Calculate the ROUGE-L score between `references` and `candidate` at summary level.
 
-Returns a vector of [`Score`](@ref)
+Return a vector of [`Score`](@ref) objects.
 
 See [Rouge: A package for automatic evaluation of summaries](http://www.aclweb.org/anthology/W04-1013)
 
-See also: [`rouge_l_sentence()`](@ref), [`rouge_n`](@ref)
+See also: [`rouge_l_sentence`](@ref), [`rouge_n`](@ref)
 """
 function rouge_l_summary(references::Vector{<:AbstractString}, candidate::AbstractString, β::Int;
     lang=Languages.English())::Vector{Score}

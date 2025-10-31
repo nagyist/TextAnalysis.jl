@@ -1,7 +1,7 @@
 """
     ngramize(lang, tokens, n)
 
-Compute the ngrams of `tokens` of the order `n`.
+Compute the n-grams of `tokens` of order `n`.
 
 # Example
 
@@ -34,7 +34,7 @@ ngramize(lang::Language, str::AbstractString, n::Integer) = ngramize(lang, token
 """
     onegramize(lang, tokens)
 
-Create the unigrams dict for input tokens.
+Create the unigrams dictionary for input tokens.
 
 # Example
 
