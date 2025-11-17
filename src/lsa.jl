@@ -2,7 +2,7 @@
 	lsa(dtm::DocumentTermMatrix)
 	lsa(crps::Corpus)
 
-Performs Latent Semantic Analysis or LSA on a corpus.
+Perform Latent Semantic Analysis (LSA) on a corpus or document-term matrix.
 
 """
 lsa(dtm::DocumentTermMatrix) = svd(Matrix(tf_idf(dtm)))

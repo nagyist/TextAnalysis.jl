@@ -35,7 +35,7 @@ function Corpus(docs::Vector{T}) where {T<:AbstractDocument}
     )
 end
 
-Corpus(docs::Vector{Any}) = Corpus(convert(Array{GenericDocument,1}, docs))
+Corpus(docs::Vector{Any}) = Corpus(convert(Vector{GenericDocument}, docs))
 
 """
     DirectoryCorpus(dirname::AbstractString)
@@ -158,9 +158,9 @@ end
 """
     lexicon(crps::Corpus)
 
-Shows the lexicon of the corpus.
+Return the lexicon of the corpus.
 
-Lexicon of a corpus consists of all the terms that occur in any document in the corpus.
+The lexicon of a corpus consists of all terms that occur in any document in the corpus.
 
 # Example
 ```julia-repl
@@ -222,19 +222,19 @@ lexical_frequency(crps::Corpus, term::AbstractString) =
 """
     inverse_index(crps::Corpus)
 
-Shows the inverse index of a corpus.
+Return the inverse index of a corpus.
 
 If we are interested in a specific term, we often want to know which documents in a corpus
-contain that term. The inverse index tells us this and therefore provides a simplistic sort of search algorithm.
+contain that term. The inverse index provides this information and enables a simplistic search algorithm.
 """
 inverse_index(crps::Corpus) = crps.inverse_index
 
 function update_inverse_index!(crps::Corpus)
-    idx = Dict{String,Array{Int,1}}()
+    idx = Dict{String,Vector{Int}}()
     for i in 1:length(crps)
         doc = crps.documents[i]
         ngram_arr = isa(doc, NGramDocument) ? collect(keys(ngrams(doc))) : tokens(doc)
-        ngram_arr = convert(Array{String,1}, ngram_arr)
+        ngram_arr = convert(Vector{String}, ngram_arr)
         for ngram in ngram_arr
             key = get!(() -> [], idx, ngram)
             push!(key, i)

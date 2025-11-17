@@ -15,12 +15,17 @@ const available_schemes = Dict(string(nameof(type)) => type for type in subtypes
 """
     tag_scheme!(tags, current_scheme::String, new_scheme::String)
 
-Convert `tags` from `current_scheme` to `new_scheme`.
+Convert tags from one tagging scheme to another in-place.
 
-List of tagging schemes currently supported-
- * BIO1 (BIO)
- * BIO2
- * BIOES
+# Arguments
+- `tags`: Vector of tags to convert
+- `current_scheme`: Name of the current tagging scheme
+- `new_scheme`: Name of the target tagging scheme
+
+# Supported Schemes
+- BIO1 (BIO)
+- BIO2  
+- BIOES
 
 # Example
 ```julia-repl
@@ -29,7 +34,7 @@ julia> tags = ["I-LOC", "O", "I-PER", "B-MISC", "I-MISC", "B-PER", "I-PER", "I-P
 julia> tag_scheme!(tags, "BIO1", "BIOES")
 
 julia> tags
-8-element Array{String,1}:
+8-element Vector{String}:
  "S-LOC"
  "O"
  "S-PER"

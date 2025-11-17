@@ -1,20 +1,21 @@
 """
-    summarize(doc [, ns])
+    summarize(doc; ns=5)
 
-Summarizes the document and returns `ns` number of sentences.
-It takes 2 arguments:
+Generate a summary of the document and return the top `ns` sentences.
 
-* `d` : A document of type `StringDocument`, `FileDocument` or `TokenDocument`
-* `ns` : (Optional) Mention the number of sentences in the Summary, defaults to `5` sentences.
+# Arguments
+- `doc`: Document of type `StringDocument`, `FileDocument`, or `TokenDocument`
+- `ns`: Number of sentences in the summary (default: 5)
 
-By default `ns` is set to the value 5.
+# Returns
+- `Vector{SubString{String}}`: Array of the most relevant sentences
 
 # Example
 ```julia-repl
 julia> s = StringDocument("Assume this Short Document as an example. Assume this as an example summarizer. This has too foo sentences.")
 
 julia> summarize(s, ns=2)
-2-element Array{SubString{String},1}:
+2-element Vector{SubString{String}}:
  "Assume this Short Document as an example."
  "This has too foo sentences."
 ```
@@ -32,6 +33,19 @@ function summarize(d::AbstractDocument; ns=5)
     return sentences[sort(sortperm(vec(p), rev=true)[1:min(ns, num_sentences)])]
 end
 
+"""
+    pagerank(A; n_iter=20, damping=0.15)
+
+Compute PageRank scores for nodes in a graph using the power iteration method.
+
+# Arguments
+- `A`: Adjacency matrix representing the graph
+- `n_iter`: Number of iterations for convergence (default: 20)  
+- `damping`: Damping factor for PageRank algorithm (default: 0.15)
+
+# Returns
+- `Matrix{Float64}`: PageRank scores for each node
+"""
 function pagerank(A; n_iter=20, damping=0.15)
     nmax = size(A, 1)
     r = rand(1, nmax)              # Generate a random starting rank.

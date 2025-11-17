@@ -1,11 +1,12 @@
 """
-    Vocabulary(word,unk_cutoff =1 ,unk_label = "<unk>") 
+    Vocabulary(word, unk_cutoff=1, unk_label="<unk>") 
 
-Stores language model vocabulary.
+Store language model vocabulary.
+
 Satisfies two common language modeling requirements for a vocabulary:
 - When checking membership and calculating its size, filters items
-by comparing their counts to a cutoff value.
-Adds a special "unknown" token which unseen words are mapped to.
+  by comparing their counts to a cutoff value.
+- Adds a special "unknown" token which unseen words are mapped to.
 
 # Example
 ```julia-repl
@@ -51,15 +52,15 @@ julia> lookup("a")
 
 julia> word = ["a", "-", "d", "c", "a"]
 
-julia> lookup(vocabulary ,word)
- 5-element Array{Any,1}:
+julia> lookup(vocabulary, word)
+ 5-element Vector{Any}:
   "a"    
   "<unk>"
   "d"    
   "c"    
   "a"
 
-If given a sequence, it will return an Array{Any,1} of the looked up words as shown above.
+If given a sequence, it will return a `Vector{Any}` of the looked up words as shown above.
    
 It's possible to update the counts after the vocabulary has been created.
 julia> update(vocabulary,["b","c","c"])
@@ -107,9 +108,9 @@ end
 """
 $(TYPEDSIGNATURES)
 
-lookup a sequence or words in the vocabulary
+Look up a sequence of words in the vocabulary.
 
-Return an Array of String
+Return a vector of strings.
 
 See [`Vocabulary`](@ref)
 """

@@ -15,12 +15,13 @@
 """
     get_ngrams(segment, max_order)
 
-Extracts all n-grams upto a given maximum order from an input segment. Returns the counter containing all n-grams upto max_order in segment
-with a count of how many times each n-gram occurred.
+Extract all n-grams up to a given maximum order from an input segment. 
+
+Return a counter containing all n-grams up to `max_order` in the segment with a count of how many times each n-gram occurred.
 
 # Arguments 
- - `segment`: text segment from which n-grams will be extracted.
- - `max_order`: maximum length in tokens of the n-grams returned by this methods.
+- `segment`: Text segment from which n-grams will be extracted.
+- `max_order`: Maximum length in tokens of the n-grams returned by this method.
 
 """
 function get_ngrams(segment::Vector{<:AbstractString}, max_order::Integer)
@@ -41,14 +42,15 @@ const DocumentWithTokenizedSentences = Vector{<:ListOfTokens}
 """
     bleu_score(reference_corpus::Vector{Vector{Token}}, translation_corpus::Vector{Token}; max_order=4, smooth=false)
 
-Computes BLEU score of translated segments against one or more references. Returns the `BLEU score`, `n-gram precisions`, `brevity penalty`, 
-geometric mean of n-gram precisions, translation_length and  reference_length
+Compute the BLEU score of translated segments against one or more references. 
+
+Return the `BLEU score`, `n-gram precisions`, `brevity penalty`, geometric mean of n-gram precisions, `translation_length`, and `reference_length`.
 
 # Arguments
- - `reference_corpus`: list of lists of references for each translation. Each reference should be tokenized into a list of tokens.
- - `translation_corpus`: list of translations to score. Each translation should be tokenized into a list of tokens.
- - `max_order`: maximum n-gram order to use when computing BLEU score. 
- - `smooth=false`: whether or not to apply. Lin et al. 2004 smoothing.
+- `reference_corpus`: List of lists of references for each translation. Each reference should be tokenized into a list of tokens.
+- `translation_corpus`: List of translations to score. Each translation should be tokenized into a list of tokens.
+- `max_order`: Maximum n-gram order to use when computing BLEU score.
+- `smooth=false`: Whether or not to apply Lin et al. 2004 smoothing.
 
 
 Example:

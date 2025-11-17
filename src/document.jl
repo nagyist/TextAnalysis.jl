@@ -20,16 +20,14 @@ mutable struct DocumentMetadata
             custom::Any
         )
 
-    Stores basic metadata about Document.
+    Store basic metadata about a document.
 
-    ...
     # Arguments
-    - `language`: What language is the document in? Defaults to Languages.English(), a Language instance defined by the Languages package.
-    - `title::String` : What is the title of the document? Defaults to "Untitled Document".
-    - `author::String` : Who wrote the document? Defaults to "Unknown Author".
-    - `timestamp::String` : When was the document written? Defaults to "Unknown Time".
-    - `custom` : user specific data field. Defaults to nothing.
-    ...
+    - `language`: Language of the document (default: `Languages.English()`)
+    - `title`: Title of the document (default: "Untitled Document")
+    - `author`: Author of the document (default: "Unknown Author")
+    - `timestamp`: Timestamp when the document was written (default: "Unknown Time")
+    - `custom`: User-specific data field (default: `nothing`)
     """
     DocumentMetadata(
         language::Language=Languages.English(),
@@ -57,7 +55,7 @@ end
 """
     FileDocument(pathname::AbstractString)
 
-Represents a document using a plain text file on disk.
+Represent a document using a plain text file on disk.
 
 # Example
 ```julia-repl
@@ -88,7 +86,7 @@ end
 """
     StringDocument(txt::AbstractString)
 
-Represents a document using a UTF8 String stored in RAM.
+Represent a document using a UTF8 String stored in RAM.
 
 # Example
 ```julia-repl
@@ -117,12 +115,12 @@ end
     TokenDocument(txt::AbstractString, dm::DocumentMetadata)
     TokenDocument(tkns::Vector{T}) where T <: AbstractString
 
-Represents a document as a sequence of UTF8 tokens.
+Represent a document as a sequence of UTF8 tokens.
 
 # Example
 ```julia-repl
 julia> my_tokens = String["To", "be", "or", "not", "to", "be..."]
-6-element Array{String,1}:
+6-element Vector{String}:
     "To"
     "be"
     "or"
@@ -159,7 +157,7 @@ end
     NGramDocument(txt::AbstractString, dm::DocumentMetadata, n::Integer=1)
     NGramDocument(ng::Dict{T, Int}, n::Integer=1) where T <: AbstractString
 
-Represents a document as a bag of n-grams, which are UTF8 n-grams and map to counts.
+Represent a document as a bag of n-grams, which are UTF8 n-grams that map to counts.
 
 # Example
 ```julia-repl
@@ -260,7 +258,7 @@ A StringDocument{String}
  * Snippet: To be or not to be...
 
 julia> tokens(sd)
-7-element Array{String,1}:
+7-element Vector{String}:
     "To"
     "be"
     "or"

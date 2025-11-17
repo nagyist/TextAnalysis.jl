@@ -13,9 +13,9 @@ end
 """
     MLE(word::Vector{T}, unk_cutoff=1, unk_label="<unk>") where {T <: AbstractString}
 
-Initiate Type for providing MLE ngram model scores.
+Initialize a type for providing MLE n-gram model scores.
 
-Implementation of Base Ngram Model.
+Implementation of the base n-gram model using Maximum Likelihood Estimation.
    
 """
 function MLE(word::Vector{T}, unk_cutoff=1, unk_label="<unk>") where {T<:AbstractString}
@@ -36,10 +36,10 @@ end
 """
     Lidstone(word::Vector{T}, gamma:: Float64, unk_cutoff=1, unk_label="<unk>") where {T <: AbstractString}
 
-Function to initiate Type(Lidstone) for providing Lidstone-smoothed scores.
+Initialize a Lidstone type for providing Lidstone-smoothed scores.
 
-In addition to initialization arguments from BaseNgramModel also requires 
-a number by which to increase the counts, gamma.
+In addition to initialization arguments from the base n-gram model, this also requires 
+a number by which to increase the counts (gamma).
 """
 function Lidstone(word::Vector{T}, gamma=1.0, unk_cutoff=1, unk_label="<unk>") where {T<:AbstractString}
     Lidstone(Vocabulary(word, unk_cutoff, unk_label), gamma)
@@ -54,10 +54,10 @@ end
 """
     Laplace(word::Vector{T}, unk_cutoff=1, unk_label="<unk>") where {T <: AbstractString}
 
-Function to initiate Type(Laplace) for providing Laplace-smoothed scores.
+Initialize a Laplace type for providing Laplace-smoothed scores.
 
-In addition to initialization arguments from BaseNgramModel also requires
-a number by which to increase the counts, gamma = 1.
+In addition to initialization arguments from the base n-gram model, this uses
+a smoothing parameter gamma = 1.
 """
 struct Laplace <: gammamodel
     vocab::Vocabulary
@@ -77,9 +77,9 @@ end
 """
 	score(m::gammamodel, temp_lm::DefaultDict, word::AbstractString, context::AbstractString)	
 
-score is used to output probability of word given that context 
+Compute the probability of a word given its context using add-one smoothing.
 
-Add-one smoothing to Lidstone or Laplace(gammamodel) models
+Applies add-one smoothing to Lidstone or Laplace (gammamodel) models.
         
 """
 function score(m::gammamodel, temp_lm::DefaultDict, word, context) #score for gammamodel output probabl
@@ -93,9 +93,9 @@ end
 """
 $(TYPEDSIGNATURES)
 
-To get probability of word given that context
+Get the probability of a word given its context.
 
-In other words, for given context calculate frequency distribution of word
+In other words, for a given context, calculate the frequency distribution of words.
 """
 function prob(m::Langmodel, templ_lm::DefaultDict, word, context=nothing)::Float64
     (isnothing(context) || isempty(context)) && return 1.0 / length(templ_lm) #provide distribution
@@ -116,7 +116,7 @@ end
 """
 	score(m::MLE, temp_lm::DefaultDict, word::AbstractString, context::AbstractString)	
 
-score is used to output probability of word given that context in MLE
+Compute the probability of a word given its context using MLE (Maximum Likelihood Estimation).
         
 """
 function score(m::MLE, temp_lm::DefaultDict, word, context=nothing)
@@ -128,9 +128,9 @@ struct WittenBellInterpolated <: InterpolatedLanguageModel
 end
 
 """
-    WittenBellInterpolated(word::Vector{T}, unk_cutoff=1, unk_label="<unk>") where { T <: AbstractString}
+    WittenBellInterpolated(word::Vector{T}, unk_cutoff=1, unk_label="<unk>") where {T <: AbstractString}
 
-Initiate Type for providing Interpolated version of Witten-Bell smoothing.
+Initialize a type for providing an interpolated version of Witten-Bell smoothing.
 
 The idea to abstract this comes from Chen & Goodman 1995.
 
@@ -175,10 +175,9 @@ end
 """
 	score(m::InterpolatedLanguageModel, temp_lm::DefaultDict, word::AbstractString, context::AbstractString)	
 
-score is used to output probability of word given that context in InterpolatedLanguageModel
+Compute the probability of a word given its context in an interpolated language model.
 
-Apply Kneserney and WittenBell smoothing
-depending upon the sub-Type
+Applies Kneser-Ney and Witten-Bell smoothing depending on the sub-type.
         
 """
 function score(m::InterpolatedLanguageModel, temp_lm::DefaultDict, word, context=nothing)
@@ -204,9 +203,9 @@ struct KneserNeyInterpolated <: InterpolatedLanguageModel
 end
 
 """
-    KneserNeyInterpolated(word::Vector{T}, discount:: Float64,unk_cutoff=1, unk_label="<unk>") where {T <: AbstractString}
+    KneserNeyInterpolated(word::Vector{T}, discount::Float64, unk_cutoff=1, unk_label="<unk>") where {T <: AbstractString}
 
-Initiate Type for providing KneserNey Interpolated language model.
+Initialize a type for providing a Kneser-Ney interpolated language model.
 
 The idea to abstract this comes from Chen & Goodman 1995.
 

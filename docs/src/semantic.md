@@ -1,14 +1,11 @@
 ## LSA: Latent Semantic Analysis
 
-Often we want to think about documents
-from the perspective of semantic content.
-One standard approach to doing this,
-is to perform Latent Semantic Analysis or LSA on the corpus.
+Often we want to analyze documents from the perspective of their semantic content. One standard approach to doing this is to perform Latent Semantic Analysis (LSA) on the corpus.
 ```@docs
 lsa
 ```
 
-lsa uses `tf_idf` for statistics.
+LSA uses `tf_idf` for computing term statistics.
 
 
 ```@repl
@@ -19,7 +16,8 @@ crps = Corpus([
 ])
 lsa(crps)
 ```
-lsa can also be performed on a `DocumentTermMatrix`.
+
+LSA can also be performed directly on a `DocumentTermMatrix`:
 ```@repl
 using TextAnalysis
 crps = Corpus([
@@ -36,10 +34,9 @@ lsa(m)
 
 ## LDA: Latent Dirichlet Allocation
 
-Another way to get a handle on the semantic content of a corpus is to use
-[Latent Dirichlet Allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation):
+Another way to analyze the semantic content of a corpus is to use [Latent Dirichlet Allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation).
 
-First we need to produce the DocumentTermMatrix
+First, we need to create a DocumentTermMatrix:
 ```@docs
 lda
 ```
@@ -52,13 +49,18 @@ crps = Corpus([
 update_lexicon!(crps)
 m = DocumentTermMatrix(crps)
 
-k = 2             # number of topics
-iterations = 1000 # number of gibbs sampling iterations
-α = 0.1           # hyper parameter
-β  = 0.1          # hyper parameter
+k = 2             # Number of topics
+iterations = 1000 # Number of Gibbs sampling iterations
+α = 0.1           # Hyperparameter for document-topic distribution
+β = 0.1           # Hyperparameter for topic-word distribution
 
-ϕ, θ  = lda(m, k, iterations, α, β);
-ϕ
-θ
+ϕ, θ = lda(m, k, iterations, α, β);
+ϕ  # Topic-word distribution matrix
+θ  # Document-topic distribution matrix
 ```
+
+The `lda` function returns two matrices:
+- `ϕ` (phi): The topic-word distribution matrix showing the probability of each word in each topic
+- `θ` (theta): The document-topic distribution matrix showing the probability of each topic in each document
+
 See `?lda` for more help.

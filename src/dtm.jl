@@ -22,7 +22,7 @@ end
 """
     columnindices(terms::Vector{String})
 
-Creates a column index lookup dictionary from a vector of terms.
+Create a column index lookup dictionary from a vector of terms.
 """
 function columnindices(terms::Vector{T}) where {T}
     column_indices = Dict{T,Int}()
@@ -37,12 +37,12 @@ end
     DocumentTermMatrix(crps::Corpus)
     DocumentTermMatrix(crps::Corpus, terms::Vector{String})
     DocumentTermMatrix(crps::Corpus, lex::AbstractDict)
-    DocumentTermMatrix(dtm::SparseMatrixCSC{Int, Int},terms::Vector{String})
+    DocumentTermMatrix(dtm::SparseMatrixCSC{Int, Int}, terms::Vector{String})
 
 Represent documents as a matrix of word counts.
 
-Allow us to apply linear algebra operations and statistical techniques.
-Need to update lexicon before use.
+This representation allows linear algebra operations and statistical techniques
+to be applied. The lexicon must be updated before use.
 
 # Examples
 ```julia-repl
@@ -108,7 +108,7 @@ DocumentTermMatrix(dtm::SparseMatrixCSC{Int,Int}, terms::Vector{T}) where {T} = 
     dtm(d::DocumentTermMatrix)
     dtm(d::DocumentTermMatrix, density::Symbol)
 
-Creates a simple sparse matrix of DocumentTermMatrix object.
+Create a sparse matrix from a DocumentTermMatrix object.
 
 # Examples
 ```julia-repl
@@ -131,7 +131,7 @@ julia> dtm(DocumentTermMatrix(crps))
   [2, 6]  =  1
 
 julia> dtm(DocumentTermMatrix(crps), :dense)
-2×6 Array{Int64,2}:
+2×6 Matrix{Int64}:
  1  2  0  1  1  1
  1  0  2  1  1  1
 ```
@@ -189,12 +189,12 @@ end
 Produce a single row of a DocumentTermMatrix.
 
 Individual documents do not have a lexicon associated with them,
-we have to pass in a lexicon as an additional argument.
+so a lexicon must be passed as an additional argument.
 
 # Examples
 ```julia-repl
 julia> dtv(crps[1], lexicon(crps))
-1×6 Array{Int64,2}:
+1×6 Matrix{Int64}:
  1  2  0  1  1  1
 ```
 """
@@ -222,7 +222,7 @@ end
     hash_dtv(d::AbstractDocument)
     hash_dtv(d::AbstractDocument, h::TextHashFunction)
 
-Represents a document as a vector with N entries.
+Represent a document as a vector with N entries.
 
 # Examples
 ```julia-repl
@@ -233,11 +233,11 @@ julia> h = TextHashFunction(10)
 TextHashFunction(hash, 10)
 
 julia> hash_dtv(crps[1], h)
-1×10 Array{Int64,2}:
+1×10 Matrix{Int64}:
  0  2  0  0  1  3  0  0  0  0
 
 julia> hash_dtv(crps[1])
-1×100 Array{Int64,2}:
+1×100 Matrix{Int64}:
  0  0  0  0  0  0  0  0  0  0  0  0  0  …  0  0  0  0  0  0  0  0  0  0  0  0
 ```
 """
@@ -258,7 +258,7 @@ hash_dtv(d::AbstractDocument) = hash_dtv(d, TextHashFunction())
     hash_dtm(crps::Corpus)
     hash_dtm(crps::Corpus, h::TextHashFunction)
 
-Represents a Corpus as a Matrix with N entries.
+Represent a Corpus as a Matrix with N entries.
 """
 function hash_dtm(crps::Corpus, h::TextHashFunction)
     n, p = length(crps), cardinality(h)
@@ -355,8 +355,9 @@ end
 """
     merge!(dtm1::DocumentTermMatrix{T}, dtm2::DocumentTermMatrix{T}) where {T}
 
-Merge one DocumentTermMatrix instance into another. Documents are appended to the end. Terms are re-sorted.
-For efficiency, this may result in modifications to dtm2 as well.
+Merge one DocumentTermMatrix instance into another. Documents are appended 
+to the end and terms are re-sorted. For efficiency, this may result in 
+modifications to dtm2 as well.
 """
 function merge!(dtm1::DocumentTermMatrix{T}, dtm2::DocumentTermMatrix{T}) where {T}
     (length(dtm2.dtm) == 0) && (return dtm1)

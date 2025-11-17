@@ -1,13 +1,20 @@
 """
-    tokenize(language, str)
+    tokenize(lang, s)
 
-Split `str` into words and other tokens such as punctuation.
+Split string into words and other tokens such as punctuation.
+
+# Arguments
+- `lang`: Language for tokenization rules
+- `s`: String to tokenize
+
+# Returns
+- `Vector{String}`: Array of tokens extracted from the string
 
 # Example
 
 ```julia-repl
 julia> tokenize(Languages.English(), "Too foo words!")
-4-element Array{String,1}:
+4-element Vector{String}:
  "Too"
  "foo"
  "words"
@@ -20,14 +27,21 @@ tokenize(lang::S, s::T) where {S<:Language,T<:AbstractString} = WordTokenizers.t
 
 
 """
-    sentence_tokenize(language, str)
+    sentence_tokenize(lang, s)
 
-Split `str` into sentences.
+Split string into individual sentences.
+
+# Arguments
+- `lang`: Language for sentence boundary detection rules
+- `s`: String to split into sentences
+
+# Returns
+- `Vector{SubString{String}}`: Array of sentences extracted from the string
 
 # Example
 ```julia-repl
 julia> sentence_tokenize(Languages.English(), "Here are few words! I am Foo Bar.")
-2-element Array{SubString{String},1}:
+2-element Vector{SubString{String}}:
  "Here are few words!"
  "I am Foo Bar."
 ```

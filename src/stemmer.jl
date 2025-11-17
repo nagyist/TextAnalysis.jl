@@ -1,7 +1,10 @@
 """
-    stemmer_for_document(doc)
+    stemmer_for_document(d)
 
-Search for an appropriate stemmer based on the language of the document.
+Return an appropriate stemmer based on the language of the document.
+
+# Arguments
+- `d`: Document for which to select stemmer
 """
 function stemmer_for_document(d::AbstractDocument)
     Stemmer(lowercase(Languages.english_name(language(d))))
@@ -11,9 +14,13 @@ end
     stem!(doc)
     stem!(crps)
 
-Stems the document or documents in `crps` with a suitable stemmer.
+Apply stemming to the document or documents in `crps` using an appropriate stemmer.
 
-Stemming cannot be done for `FileDocument` and Corpus made of these type of documents.
+Does not support `FileDocument` or Corpus containing `FileDocument`.
+
+# Arguments
+- `doc`: Document to apply stemming to
+- `crps`: Corpus containing documents to apply stemming to
 """
 function stem!(d::AbstractDocument)
     stemmer = stemmer_for_document(d)
@@ -47,7 +54,10 @@ end
 """
     stem!(crps::Corpus)
 
-Stem an entire corpus. Assumes all documents in the corpus have the same language (picked from the first)
+Apply stemming to an entire corpus. Assumes all documents in the corpus have the same language (determined from the first document).
+
+# Arguments
+- `crps`: Corpus containing documents to apply stemming to
 """
 function stem!(crps::Corpus)
     stemmer = stemmer_for_document(crps.documents[1])

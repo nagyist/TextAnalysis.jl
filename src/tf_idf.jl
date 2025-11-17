@@ -1,9 +1,14 @@
 """
     tf!(dtm::AbstractMatrix{Real}, tf::AbstractMatrix{AbstractFloat})
 
-Overwrite `tf` with the term frequency of the `dtm`.
+Compute term frequency and store result in `tf` matrix.
 
-Works correctly if `dtm` and `tf` are same matrix.
+# Arguments
+- `dtm`: Document-term matrix containing term counts
+- `tf`: Output matrix for term frequency values (modified in-place)
+
+# Notes
+Works correctly when `dtm` and `tf` are the same matrix.
 
 See also: [`tf`](@ref), [`tf_idf`](@ref), [`tf_idf!`](@ref)
 """
@@ -25,9 +30,14 @@ end
 """
     tf!(dtm::SparseMatrixCSC{Real}, tf::SparseMatrixCSC{AbstractFloat})
 
-Overwrite `tf` with the term frequency of the `dtm`.
+Compute term frequency for sparse matrices and store result in `tf`.
 
-`tf` should have the has same nonzeros as `dtm`.
+# Arguments
+- `dtm`: Sparse document-term matrix containing term counts
+- `tf`: Output sparse matrix for term frequency values (modified in-place)
+
+# Notes
+The `tf` matrix should have the same nonzero pattern as `dtm`.
 
 See also: [`tf`](@ref), [`tf_idf`](@ref), [`tf_idf!`](@ref)
 """
@@ -59,7 +69,13 @@ tf!(dtm::SparseMatrixCSC{T}) where {T<:Real} = tf!(dtm, dtm)
     tf(dtm::SparseMatrixCSC{Real})
     tf(dtm::Matrix{Real})
 
-Compute the `term-frequency` of the input.
+Compute term frequency for the document-term matrix.
+
+# Arguments
+- `dtm`: Document-term matrix (DocumentTermMatrix, sparse matrix, or dense matrix)
+
+# Returns
+- `Matrix{Float64}` or `SparseMatrixCSC{Float64}`: Term frequency matrix
 
 # Example
 
@@ -96,11 +112,16 @@ tf(dtm::SparseMatrixCSC{T}) where {T<:Real} = tf!(dtm, similar(dtm, Float64))
 """
     tf_idf!(dtm::AbstractMatrix{Real}, tf_idf::AbstractMatrix{AbstractFloat})
 
-Overwrite `tf_idf` with the tf-idf (Term Frequency - Inverse Doc Frequency) of the `dtm`.
+Compute TF-IDF (Term Frequency-Inverse Document Frequency) and store result in `tf_idf` matrix.
 
-`dtm` and `tf-idf` must be matrices of same dimensions.
+# Arguments
+- `dtm`: Document-term matrix containing term counts
+- `tf_idf`: Output matrix for TF-IDF values (modified in-place)
 
-See also: [`tf`](@ref), [`tf!`](@ref) , [`tf_idf`](@ref)
+# Notes
+The matrices `dtm` and `tf_idf` must have the same dimensions.
+
+See also: [`tf`](@ref), [`tf!`](@ref), [`tf_idf`](@ref)
 """
 function tf_idf!(dtm::AbstractMatrix{T1}, tfidf::AbstractMatrix{T2}) where {T1<:Real,T2<:AbstractFloat}
     n, p = size(dtm)
@@ -160,7 +181,10 @@ end
 """
     tf_idf!(dtm)
 
-Compute tf-idf for `dtm`
+Compute TF-IDF values for document-term matrix in-place.
+
+# Arguments
+- `dtm`: Document-term matrix to transform (modified in-place)
 """
 tf_idf!(dtm::AbstractMatrix{T}) where {T<:Real} = tf_idf!(dtm, dtm)
 
@@ -170,18 +194,22 @@ tf_idf!(dtm::SparseMatrixCSC{T}) where {T<:Real} = tf_idf!(dtm, dtm)
 #tf_idf!(dtm::DocumentTermMatrix) = tf_idf!(dtm.dtm)
 
 """
-    tf(dtm::DocumentTermMatrix)
-    tf(dtm::SparseMatrixCSC{Real})
-    tf(dtm::Matrix{Real})
+    tf_idf(dtm::DocumentTermMatrix)
+    tf_idf(dtm::SparseMatrixCSC{Real})
+    tf_idf(dtm::Matrix{Real})
 
-Compute `tf-idf` value (Term Frequency - Inverse Document Frequency) for the input.
+Compute TF-IDF (Term Frequency-Inverse Document Frequency) values for the document-term matrix.
 
-In many cases, raw word counts are not appropriate for use because:
+# Arguments
+- `dtm`: Document-term matrix (DocumentTermMatrix, sparse matrix, or dense matrix)
 
+# Returns
+- `Matrix{Float64}` or `SparseMatrixCSC{Float64}`: TF-IDF weighted matrix
+
+# Notes
+TF-IDF addresses issues with raw word counts:
 - Some documents are longer than other documents
 - Some words are more frequent than other words
-
-A simple workaround this can be done by performing `TF-IDF` on a `DocumentTermMatrix`
 
 # Example
 
@@ -320,7 +348,7 @@ d = dtm(crps)
 tfm = tf_idf(d)
 cs = cos_similarity(tfm)
 Matrix(cs)
-    # 3×3 Array{Float64,2}:
+    # 3×3 Matrix{Float64}:
     #  1.0        0.0329318  0.0
     #  0.0329318  1.0        0.0
     #  0.0        0.0        1.0
